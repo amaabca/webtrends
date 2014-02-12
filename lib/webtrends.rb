@@ -1,5 +1,9 @@
 require "webtrends/version"
+require "rest_client"
 
 module Webtrends
-  # Your code goes here...
+  require "webtrends/tracker"
+  require "webtrends/configuration"
 end
+
+
