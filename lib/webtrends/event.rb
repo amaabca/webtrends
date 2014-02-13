@@ -1,13 +1,12 @@
 module Webtrends
-  class Event
+  class Event < Service
 
-    attr_accessor :tags, :verbose, :endpoint, :format
+    attr_accessor :tags
 
     def initialize(args = {})
+      super
       self.tags = args.fetch(:tags, {})
-      self.verbose = args.fetch(:verbose, Webtrends.configuration.verbose)
-      self.endpoint = args.fetch(:endpoint, Webtrends.configuration.endpoint)
-      self.format = args.fetch(:format, Webtrends.configuration.format)
+      self.service = args.fetch(:service, Webtrends.configuration.event_service)
     end
 
     def track
@@ -15,10 +14,5 @@ module Webtrends
         RestClient.post endpoint, options.merge(tags)
       end
     end
-
-    private
-      def options
-        {dcsverbose: verbose, dcsformat: format}
-      end
   end
 end

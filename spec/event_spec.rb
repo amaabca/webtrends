@@ -2,15 +2,13 @@ describe Webtrends::Event do
 
   let(:successful_response) { OpenStruct.new({response: File.read(File.join('spec', 'fixtures', 'success.xml')), code: 200}) }
   let(:default_configuration) { OpenStruct.new(
-    endpoint: 'https://dc.webtrends.com/v1/somewafflesid_icea/events.svc',
+    customer_id: 'whereevermd',
     verbose: false,
     format: 'xml') }
 
   before(:each) do
     Webtrends.configure do |c|
-      c.endpoint = default_configuration.endpoint
-      c.verbose = default_configuration.verbose
-      c.format = default_configuration.format
+      c.customer_id = default_configuration.customer_id
     end
   end
 
@@ -27,7 +25,7 @@ describe Webtrends::Event do
       it 'should merge tags and options' do
         RestClient.stub(:post).and_return(successful_response)
         subject.tags = {'dcsuri' => '/waffles'}
-        expect(RestClient).to receive(:post).with(subject.endpoint, subject.tags.merge(subject.send(:options)))
+        expect(RestClient).to receive(:post).with(subject.send(:endpoint), subject.tags.merge(subject.send(:options)))
         response = subject.track
       end
     end
@@ -54,7 +52,7 @@ describe Webtrends::Event do
   describe '#initialize' do
     context 'not passing default configuraiton' do
       it 'uses default config attributes' do
-        expect(subject.endpoint).to eq(default_configuration.endpoint)
+        expect(subject.customer_id).to eq(default_configuration.customer_id)
         expect(subject.verbose).to eq(default_configuration.verbose)
         expect(subject.format).to eq(default_configuration.format)
       end
@@ -62,13 +60,13 @@ describe Webtrends::Event do
 
     context 'passing default configuraiton' do
       let(:custom_configuration) { OpenStruct.new(
-        endpoint: 'https://dc.webtrends.com/v1/somebeerid_beer/events.svc',
+        customer_id: 'somedifferent',
         verbose: true,
         format: 'plain') }
 
       let(:subject) { Webtrends::Event.new(custom_configuration.to_h) }
       it 'does not uses default config attributes' do
-        expect(subject.endpoint).to_not eq(default_configuration.endpoint)
+        expect(subject.customer_id).to_not eq(default_configuration.customer_id)
         expect(subject.verbose).to_not eq(default_configuration.verbose)
         expect(subject.format).to_not eq(default_configuration.format)
       end
