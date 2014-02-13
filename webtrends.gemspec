@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Webtrends::VERSION
   spec.authors       = ["Ruben Estevez"]
   spec.email         = ["ruben.a.estevez@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Make use of the Webtrends api to post event data for analytics purposes.}
+  spec.summary       = %q{Make use of the Webtrends api to post event data for analytics purposes.}
+  spec.homepage      = "https://github.com/amaabca/webtrends"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -22,7 +22,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec-instafail"
   spec.add_development_dependency "simplecov"
-  spec.add_dependency "rest_client"
+  spec.add_development_dependency "coveralls"
+  spec.add_dependency "rest-client"
 
 end
