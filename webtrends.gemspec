@@ -6,8 +6,8 @@ require 'webtrends/version'
 Gem::Specification.new do |spec|
   spec.name          = "webtrends"
   spec.version       = Webtrends::VERSION
-  spec.authors       = ["Ruben Estevez"]
-  spec.email         = ["ruben.a.estevez@gmail.com"]
+  spec.authors       = ["Michael van den Beuken", "Ruben Estevez", "Jordan Babe", "Mathieu Gilbert", "Ryan Jones", "Darko Dosenovic"]
+  spec.email         = ["michael.beuken@gmail.com", "ruben.a.estevez@gmail.com", "jorbabe@gmail.com", "mathieu.gilbert@ama.ab.ca", "ryan.michael.jones@gmail.com", "darko.dosenovic@ama.ab.ca"]
   spec.description   = %q{Make use of the Webtrends api to post event data for analytics purposes.}
   spec.summary       = %q{Make use of the Webtrends api to post event data for analytics purposes.}
   spec.homepage      = "https://github.com/amaabca/webtrends"

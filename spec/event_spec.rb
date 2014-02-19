@@ -1,10 +1,14 @@
 describe Webtrends::Event do
 
-  let(:successful_response) { OpenStruct.new({response: File.read(File.join('spec', 'fixtures', 'success.xml')), code: 200}) }
-  let(:default_configuration) { OpenStruct.new(
-    customer_id: 'whereevermd',
-    verbose: false,
-    format: 'xml') }
+  let(:successful_response) do
+     OpenStruct.new({response: File.read(File.join('spec', 'fixtures', 'success.xml')), code: 200})
+  end
+  let(:default_configuration) do
+    OpenStruct.new(
+      customer_id: 'whereevermd',
+      verbose: false,
+      format: 'xml')
+  end
 
   before(:each) do
     Webtrends.configure do |c|
@@ -13,7 +17,6 @@ describe Webtrends::Event do
   end
 
   describe '#track' do
-
     context 'successful response' do
       it 'returns success code' do
         RestClient.stub(:post).and_return(successful_response)
@@ -59,10 +62,12 @@ describe Webtrends::Event do
     end
 
     context 'passing default configuraiton' do
-      let(:custom_configuration) { OpenStruct.new(
+      let(:custom_configuration) do
+        OpenStruct.new(
         customer_id: 'somedifferent',
         verbose: true,
-        format: 'plain') }
+        format: 'plain')
+      end
 
       let(:subject) { Webtrends::Event.new(custom_configuration.to_h) }
       it 'does not uses default config attributes' do

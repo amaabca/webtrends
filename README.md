@@ -28,7 +28,10 @@ Create config/initializers/webtrends.rb
 Add the following configuration block
 
     Webtrends.configure do |c|
-      c.endpoint = 'https://dc.webtrends.com/v1/YOURCLIENTID_IDID/events.svc'
+      c.protocol = 'https'
+      c.domain = 'dc.webtrends.com'
+      c.version = 'v1'
+      c.customer_id = YOUR_CUSTOMER_ID
       c.verbose = true (setting verbose false is recommended in production)
       c.format = 'xml' (plain or xml)
     end
