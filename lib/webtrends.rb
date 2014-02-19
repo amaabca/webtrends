@@ -1,5 +1,6 @@
-require "webtrends/version"
+require "rest_client"
 
-module Webtrends
-  # Your code goes here...
-end
+require "webtrends/version"
+require "webtrends/service"
+require "webtrends/event"
+require "webtrends/configuration"
