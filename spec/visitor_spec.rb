@@ -1,9 +1,11 @@
 describe Webtrends::Visitor do
   let(:successful_response) { OpenStruct.new({response: '10.62.80.61-2450180400.29991975', code: 200}) }
-  let(:default_configuration) { OpenStruct.new(
-    customer_id: 'whereevermd',
-    verbose: false,
-    format: 'xml') }
+  let(:default_configuration) do
+    OpenStruct.new(
+      customer_id: 'whereevermd',
+      verbose: false,
+      format: 'xml')
+  end
 
   before(:each) do
     Webtrends.configure do |c|
@@ -12,7 +14,6 @@ describe Webtrends::Visitor do
   end
 
   describe '#track' do
-
     context 'successful response' do
       it 'returns success code' do
         RestClient.stub(:post).and_return(successful_response)
@@ -28,7 +29,7 @@ describe Webtrends::Visitor do
     end
 
     context 'unsuccessful response' do
-      it 'should trigger an exception' do
+      it 'triggers an exception' do
         RestClient.stub(:post).and_raise(RestClient::BadRequest.new '400 Bad Request')
         begin
           response = subject.track
@@ -40,23 +41,22 @@ describe Webtrends::Visitor do
     end
   end
 
-  describe '#initialize' do
-    context 'not passing default configuraiton' do
-      it 'uses default config attributes' do
+  describe '.initialize' do
+    context 'not passing custom configuration' do
+      it 'uses default configuration' do
         expect(subject.customer_id).to eq(default_configuration.customer_id)
         expect(subject.verbose).to eq(default_configuration.verbose)
         expect(subject.format).to eq(default_configuration.format)
       end
     end
 
-    context 'passing default configuraiton' do
-      let(:custom_configuration) { OpenStruct.new(
-        customer_id: 'somedifferent',
-        verbose: true,
-        format: 'plain') }
+    context 'passing custom configuration' do
+      let(:custom_configuration) do
+        { customer_id: 'somedifferent', verbose: true, format: 'plain' }
+      end
 
-      let(:subject) { Webtrends::Visitor.new(custom_configuration.to_h) }
-      it 'does not uses default config attributes' do
+      let(:subject) { Webtrends::Visitor.new(custom_configuration) }
+      it 'does not use default configuration' do
         expect(subject.customer_id).to_not eq(default_configuration.customer_id)
         expect(subject.verbose).to_not eq(default_configuration.verbose)
         expect(subject.format).to_not eq(default_configuration.format)
