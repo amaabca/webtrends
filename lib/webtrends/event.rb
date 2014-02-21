@@ -10,7 +10,7 @@ module Webtrends
     end
 
     def track
-      if !tags.empty?
+      if !tags.nil? && !tags.empty?
         RestClient.post endpoint, options.merge(tags)
       end
     end
