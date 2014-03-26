@@ -35,14 +35,9 @@ describe Webtrends::Event do
 
     context 'unsuccessful response' do
       it 'triggers an exception' do
-        RestClient.stub(:post).and_raise(RestClient::BadRequest.new '400 Bad Request')
+        RestClient.stub(:post).and_raise(RestClient::BadRequest.new)
         subject.tags = {'WT.ti' => 'waffles'}
-        begin
-          response = subject.track
-        rescue Exception => e
-          expect(e).to be_kind_of(RestClient::BadRequest)
-        end
-        expect(response).to be_nil
+        expect { subject.track }.to raise_error(Webtrends::Exception)
       end
 
       it 'does not call webtrends if tags is empty' do

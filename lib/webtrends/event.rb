@@ -13,6 +13,8 @@ module Webtrends
       if !tags.nil? && !tags.empty?
         RestClient.post endpoint, options.merge(tags)
       end
+    rescue => ex
+      raise Webtrends::Exception.new(ex)
     end
   end
 end
