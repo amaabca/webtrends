@@ -25,7 +25,7 @@ describe Webtrends::Event do
         expect(response.code).to eq(200)
       end
 
-      it 'should merge tags and options' do
+      it 'merges tags and options' do
         RestClient.stub(:post).and_return(successful_response)
         subject.tags = {'dcsuri' => '/waffles'}
         expect(RestClient).to receive(:post).with(subject.send(:endpoint), subject.tags.merge(subject.send(:options)))
@@ -34,43 +34,41 @@ describe Webtrends::Event do
     end
 
     context 'unsuccessful response' do
-      it 'should trigger an exception' do
-        RestClient.stub(:post).and_raise(RestClient::BadRequest.new '400 Bad Request')
+      it 'triggers an exception' do
+        RestClient.stub(:post).and_raise(RestClient::BadRequest.new)
         subject.tags = {'WT.ti' => 'waffles'}
-        begin
-          response = subject.track
-        rescue Exception => e
-          expect(e).to be_kind_of(RestClient::BadRequest)
-        end
-        expect(response).to be_nil
+        expect { subject.track }.to raise_error(Webtrends::Exception)
       end
 
-      it 'should not call webtrends if tags is empty' do
+      it 'does not call webtrends if tags is empty' do
+        expect(RestClient).to_not receive(:post)
+        response = subject.track
+      end
+
+      it 'does not call webtrends if tags is nil' do
+        subject.tags = nil
         expect(RestClient).to_not receive(:post)
         response = subject.track
       end
     end
   end
 
-  describe '#initialize' do
-    context 'not passing default configuraiton' do
-      it 'uses default config attributes' do
+  describe '.initialize' do
+    context 'not passing custom configuration' do
+      it 'uses default configuration' do
         expect(subject.customer_id).to eq(default_configuration.customer_id)
         expect(subject.verbose).to eq(default_configuration.verbose)
         expect(subject.format).to eq(default_configuration.format)
       end
     end
 
-    context 'passing default configuraiton' do
+    context 'passing custom configuration' do
       let(:custom_configuration) do
-        OpenStruct.new(
-        customer_id: 'somedifferent',
-        verbose: true,
-        format: 'plain')
+        { customer_id: 'somedifferent', verbose: true, format: 'plain' }
       end
 
-      let(:subject) { Webtrends::Event.new(custom_configuration.to_h) }
-      it 'does not uses default config attributes' do
+      let(:subject) { Webtrends::Event.new(custom_configuration) }
+      it 'does not use default configuration' do
         expect(subject.customer_id).to_not eq(default_configuration.customer_id)
         expect(subject.verbose).to_not eq(default_configuration.verbose)
         expect(subject.format).to_not eq(default_configuration.format)
